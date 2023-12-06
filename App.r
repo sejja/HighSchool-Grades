@@ -1,7 +1,7 @@
 library(shiny)
 library(shinythemes)
 
-Surveillance <- read.csv("student_math_clean.csv")
+Surveillance <- read.csv("dataset/student_math_clean.csv")
 
 ui <- fluidPage(
   theme = shinytheme("sandstone"),
@@ -18,6 +18,7 @@ ui <- fluidPage(
   selectizeInput(inputId = "selection_tags", label = NULL, choices = names(Surveillance), selected = NULL, multiple = T,
                  options = NULL),
   
+  actionButton('Update_Selection', 'Update Selection'),
   hr(),
   
   titlePanel("High School Grades"),
@@ -38,6 +39,10 @@ ui <- fluidPage(
   )
 )
 server <- function(input, output) {
+  
+  observeEvent(c(input$Update_Selection), ignoreInit = TRUE, {
+    showNotification("Updated Plotting Parameters")
+  })
   
   output$distPlot <- renderPlot({
     
