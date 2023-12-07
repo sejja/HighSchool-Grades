@@ -1,7 +1,8 @@
 library(shiny)
 library(shinythemes)
+source("DataPreparation.R")
 
-Surveillance <- read.csv("dataset/student_math_clean.csv")
+Surveillance <- prepare_data("dataset/student_math_clean.csv")
 
 ui <- fluidPage(
   theme = shinytheme("sandstone"),
@@ -24,10 +25,10 @@ ui <- fluidPage(
   titlePanel("High School Grades"),
   sidebarLayout(
     sidebarPanel(
-      sliderInput(inputId = "children",
-                  label = "Number of bins:",
+      sliderInput(inputId = "samplesize",
+                  label = "Sample Size:",
                   min = 1,
-                  max = 50,
+                  max = nrow(Surveillance),
                   value = 30)
       
     ),
@@ -42,20 +43,13 @@ server <- function(input, output) {
   
   observeEvent(c(input$Update_Selection), ignoreInit = TRUE, {
     showNotification("Updated Plotting Parameters")
+    
+    output$distPlot <- renderPlot({
+      if(length(input$selection_tags) > 1) {
+        plot(Surveillance[[input$selection_tags[1]]][1:input$samplesize], Surveillance[[input$selection_tags[2]]][1:input$samplesize], xlab = input$selection_tags[1], ylab = input$selection_tags[2])
+      }
+    })
   })
-  
-  output$distPlot <- renderPlot({
-    
-    plot(Surveillance)
-    x    <- faithful$waiting
-    grades <- seq(min(x), max(x), length.out = input$children + 1)
-    
-    hist(x, breaks = grades,
-         xlab = "Grades",
-         main = "High School Grade Population")
-    
-  })
-  
 }
 
 # Create Shiny app ----

@@ -10,15 +10,18 @@ convert_types <- function(dataset) {
   print("Converting boolean like types into logicals")
   
   for(field in logical_fields)
-    Surveillance[[field]] <- ifelse(Surveillance[[field]] == "yes", T, F)
+    dataset[[field]] <- ifelse(dataset[[field]] == "yes", T, F)
   
   print("Converting pure string fields to factors when applicable")
   
   for(field in factor_fields)
-    Surveillance[[field]] <- as.factor(Surveillance[[field]])
+    dataset[[field]] <- as.factor(dataset[[field]])
 }
 
-surveillance <- open_dataset("dataset/student_math_clean.csv")
-print("Data Set Read Succesfully!")
-print("Convertin tinto appropiate types")
-convert_types(surveillance)
+prepare_data <- function(path) {
+  surveillance <- open_dataset(path)
+  print("Data Set Read Succesfully!")
+  print("Convertin tinto appropiate types")
+  convert_types(surveillance) 
+  return (surveillance)
+}
