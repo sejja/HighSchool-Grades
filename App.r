@@ -46,6 +46,7 @@ server <- function(input, output) {
   
   output$distPlot <- renderPlot({
     
+    plot(Surveillance)
     x    <- faithful$waiting
     grades <- seq(min(x), max(x), length.out = input$children + 1)
     
