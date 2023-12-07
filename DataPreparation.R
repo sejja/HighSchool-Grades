@@ -4,7 +4,6 @@ open_dataset <- function(path) {
 
 convert_types <- function(dataset) {
   logical_fields <- c("school_support", "family_support", "extra_paid_classes", "activities", "nursery_school", "higher_ed", "internet_access", "romantic_relationship")
-  numeric_fields <- c("family_relationship", "free_time", "social", "weekday_alcochol", "weekend_alcohol", "health", "abstences", "grade_1", "grade_2", "final_grade")
   factor_fields <- c("school", "sex", "address_type", "family_size", "parent_status", "mother_education", "father_education", "mother_job", "father_job", "school_choice_reason", "guardian", "travel_time", "study_time")
   
   print("Converting boolean like types into logicals")
