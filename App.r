@@ -1,5 +1,6 @@
 library(shiny)
 library(shinythemes)
+source("DataCollection.R")
 source("DataPreparation.R")
 
 Surveillance <- prepare_data("dataset/student_math_clean.csv")
