@@ -24,6 +24,22 @@ swap_rows <- function(dataset) {
   return (dataset)
 }
 
+find_outliers <- function(dataset){
+  important_numeric_fields <- c("absences","age","weekday_alcohol","weekend_alcohol","health")
+  outliers_list <- lapply(dataset[important_numeric_fields], boxplot_outliers)
+  # Hay que ver cuales quitamos y cuales dejamos --------------------------------------------------------------------------------
+}
+
+boxplot_outliers <- function(column) {
+  outliers <- boxplot(column, plot = FALSE)$out
+  names(outliers) <- names(column)
+  return(outliers)
+}
+
+normal_column <- function(dataset){
+  dataset <- cbind(dataset, normalized_health = ((dataset$health - min(dataset$health))/(max(dataset$health)-min(dataset$health))))
+}
+
 prepare_data <- function(path) {
   surveillance <- open_dataset(path)
   print("Data Set Read Succesfully!")
@@ -31,5 +47,9 @@ prepare_data <- function(path) {
   surveillance <- convert_types(surveillance)
   print("Swap rows for tydiness")
   surveillance <- swap_rows(surveillance)
+  print("Searching outliers")
+  find_outliers(surveillance)
+  print("Adding normalized health column")
+  normal_column(surveillance)
   return (surveillance)
 }
