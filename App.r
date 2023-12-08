@@ -16,7 +16,11 @@ ui <- fluidPage(
     tabPanel("Average")
   ),
   
-  selectizeInput(inputId = "selection_tags", label = NULL, choices = names(Surveillance), selected = c("grade_1", "grade_2"), multiple = T,
+  selectizeInput(inputId = "selection_tags", 
+                 label = NULL, 
+                 choices = names(Surveillance), 
+                 selected = c("grade_1", "grade_2"), 
+                 multiple = T,
                  options = NULL),
   
   actionButton('Update_Selection', 'Update Selection'),
@@ -46,7 +50,10 @@ server <- function(input, output) {
     
     output$distPlot <- renderPlot({
       if(length(input$selection_tags) > 1) {
-        plot(Surveillance[[input$selection_tags[1]]][1:input$samplesize], Surveillance[[input$selection_tags[2]]][1:input$samplesize], xlab = input$selection_tags[1], ylab = input$selection_tags[2])
+        plot(Surveillance[[input$selection_tags[1]]][1:input$samplesize], 
+             Surveillance[[input$selection_tags[2]]][1:input$samplesize], 
+             xlab = input$selection_tags[1], 
+             ylab = input$selection_tags[2])
       }
     })
   })
