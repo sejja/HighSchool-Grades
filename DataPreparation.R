@@ -7,14 +7,11 @@ convert_types <- function(dataset) {
   factor_fields <- c("school", "sex", "address_type", "family_size", "parent_status", "mother_education", "father_education", "mother_job", "father_job", "school_choice_reason", "guardian", "travel_time", "study_time")
   
   print("Converting boolean like types into logicals")
+  dataset[logical_fields] <- lapply(dataset[logical_fields], function(x) x == "yes")
   
-  for(field in logical_fields)
-    dataset[[field]] <- ifelse(dataset[[field]] == "yes", T, F)
   
   print("Converting pure string fields to factors when applicable")
-  
-  for(field in factor_fields)
-    dataset[[field]] <- as.factor(dataset[[field]])
+  dataset[factor_fields] <- lapply(dataset[factor_fields], as.factor)
 
   return (dataset)
 }
