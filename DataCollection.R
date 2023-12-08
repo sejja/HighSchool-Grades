@@ -17,6 +17,7 @@ important_columns <-
     "internet_access",
     "free_time",
     "social",
+    "weekday_alcohol",
     "absences",
     "final_grade"
   )
