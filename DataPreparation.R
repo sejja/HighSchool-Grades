@@ -15,12 +15,24 @@ convert_types <- function(dataset) {
   
   for(field in factor_fields)
     dataset[[field]] <- as.factor(dataset[[field]])
+
+  return (dataset)
+}
+
+swap_rows <- function(dataset) {
+  names <- names(dataset)
+  names[16] <- "romantic_relationship"
+  names[24] <- "class_failures"
+  dataset[, names]
+  return (dataset)
 }
 
 prepare_data <- function(path) {
   surveillance <- open_dataset(path)
   print("Data Set Read Succesfully!")
-  print("Convertin tinto appropiate types")
-  convert_types(surveillance) 
+  print("Convert into appropiate types")
+  surveillance <- convert_types(surveillance)
+  print("Swap rows for tydiness")
+  surveillance <- swap_rows(surveillance)
   return (surveillance)
 }
