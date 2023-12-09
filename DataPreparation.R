@@ -40,6 +40,13 @@ generate_na_values <- function(dataset) {
   return(dataset)
 }
 
+#Replace NA values with the mean of the column
+na_imputation <- function(dataset){
+  print("Filling NA values")
+  dataset$health[is.na(dataset$health)] <- mean(dataset$health, na.rm = TRUE)
+  return(dataset)
+}
+
 normal_column <- function(dataset){
   dataset <- cbind(dataset, normalized_health = ((dataset$health - min(dataset$health))/(max(dataset$health)-min(dataset$health))))
 }
@@ -64,6 +71,7 @@ prepare_data <- function(df) {
   find_outliers(df)
   print("Adding artificial NA values")
   df <- generate_na_values(df)
+  df <- na_imputation(df)
   print("Adding normalized health column")
   normal_column(df)
   combined_column(df)
