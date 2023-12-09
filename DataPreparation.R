@@ -44,9 +44,15 @@ combined_column <- function(dataset){
   dataset <- cbind(dataset, week_alcohol = (dataset$weekday_alcohol + dataset$weekend_alcohol)/2)
 }
 
+remove_excess_rows <- function(dataset) {
+  dataset$student_id <- NULL
+}
+
 prepare_data <- function(path) {
   surveillance <- open_dataset(path)
   print("Data Set Read Succesfully!")
+  print("Removing uneeded rows")
+  remove_excess_rows(surveillance)
   print("Convert into appropiate types")
   surveillance <- convert_types(surveillance)
   print("Swap rows for tydiness")
