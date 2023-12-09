@@ -32,6 +32,14 @@ boxplot_outliers <- function(column) {
   return(outliers)
 }
 
+#Adds 2% NA values to the data set in random positions in column health
+generate_na_values <- function(dataset) {
+  set.seed(0)
+  na_index <- sample(nrow(dataset), 0.02 * nrow(dataset))
+  dataset[na_index, "health"] <- NA
+  return(dataset)
+}
+
 normal_column <- function(dataset){
   dataset <- cbind(dataset, normalized_health = ((dataset$health - min(dataset$health))/(max(dataset$health)-min(dataset$health))))
 }
@@ -54,6 +62,8 @@ prepare_data <- function(df) {
   df <- swap_rows(df)
   print("Searching outliers")
   find_outliers(df)
+  print("Adding artificial NA values")
+  df <- generate_na_values(df)
   print("Adding normalized health column")
   normal_column(df)
   combined_column(df)
