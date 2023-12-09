@@ -40,6 +40,10 @@ normal_column <- function(dataset){
   dataset <- cbind(dataset, normalized_health = ((dataset$health - min(dataset$health))/(max(dataset$health)-min(dataset$health))))
 }
 
+combined_column <- function(dataset){
+  dataset <- cbind(dataset, week_alcohol = (dataset$weekday_alcohol + dataset$weekend_alcohol)/2)
+}
+
 prepare_data <- function(path) {
   surveillance <- open_dataset(path)
   print("Data Set Read Succesfully!")
@@ -51,5 +55,6 @@ prepare_data <- function(path) {
   find_outliers(surveillance)
   print("Adding normalized health column")
   normal_column(surveillance)
+  combined_column(surveillance)
   return (surveillance)
 }
