@@ -1,7 +1,3 @@
-open_dataset <- function(path) {
-  return (read.csv(path))
-}
-
 convert_types <- function(dataset) {
   logical_fields <- c("school_support", "family_support", "extra_paid_classes", "activities", "nursery_school", "higher_ed", "internet_access", "romantic_relationship")
   factor_fields <- c("school", "sex", "address_type", "family_size", "parent_status", "mother_education", "father_education", "mother_job", "father_job", "school_choice_reason", "guardian", "travel_time", "study_time")
@@ -48,19 +44,18 @@ remove_excess_rows <- function(dataset) {
   dataset$student_id <- NULL
 }
 
-prepare_data <- function(path) {
-  surveillance <- open_dataset(path)
+prepare_data <- function(df) {
   print("Data Set Read Succesfully!")
   print("Removing uneeded rows")
-  remove_excess_rows(surveillance)
+  remove_excess_rows(df)
   print("Convert into appropiate types")
-  surveillance <- convert_types(surveillance)
+  df <- convert_types(df)
   print("Swap rows for tydiness")
-  surveillance <- swap_rows(surveillance)
+  df <- swap_rows(df)
   print("Searching outliers")
-  find_outliers(surveillance)
+  find_outliers(df)
   print("Adding normalized health column")
-  normal_column(surveillance)
-  combined_column(surveillance)
-  return (surveillance)
+  normal_column(df)
+  combined_column(df)
+  return (df)
 }

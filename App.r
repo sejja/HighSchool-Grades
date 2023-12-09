@@ -3,7 +3,7 @@ library(shinythemes)
 source("DataCollection.R")
 source("DataPreparation.R")
 
-Surveillance <- prepare_data("dataset/student_math_clean.csv")
+Surveillance <- prepare_data(math_df)
 
 ui <- fluidPage(
   theme = shinytheme("sandstone"),
