@@ -28,7 +28,7 @@ ui <- fluidPage(
   hr(),
   
   titlePanel("High School Grades"),
-  sidebarLayout(
+  fluidRow(
     sidebarPanel(
       sliderInput(inputId = "samplesize",
                   label = "Sample Size:",
@@ -38,8 +38,8 @@ ui <- fluidPage(
       
     ),
     
-    mainPanel(
-      plotOutput(outputId = "distPlot")
+    column(2, 
+      uiOutput("plots")
       
     )
   )
@@ -49,14 +49,30 @@ server <- function(input, output) {
   observeEvent(c(input$Update_Selection), ignoreInit = TRUE, {
     showNotification("Updated Plotting Parameters")
     
-    output$distPlot <- renderPlot({
-      if(length(input$selection_tags) > 1) {
-        plot(Surveillance[[input$selection_tags[1]]][1:input$samplesize], 
-             Surveillance[[input$selection_tags[2]]][1:input$samplesize], 
-             xlab = input$selection_tags[1], 
-             ylab = input$selection_tags[2])
-      }
+    permutations <- combn(input$selection_tags, 2)
+    output$plots <- renderUI({
+    plot_output_list <- lapply(1:ncol(permutations), function(i) {
+      plotname <- paste0("plot", i)
+      plotOutput(plotname, height = 512, width = 512)
     })
+
+    do.call(tagList, plot_output_list)
+  })
+
+  for (i in 1:ncol(permutations)) {
+    local({
+      my_i <- i
+      plotname <- paste0("plot", my_i)
+      
+      output[[plotname]] <- renderPlot({
+        plot(Surveillance[[permutations[1, my_i]]][1:input$samplesize], Surveillance[[permutations[2, my_i]]][1:input$samplesize],
+             xlab = permutations[1, my_i], 
+             ylab = permutations[2, my_i],
+             main = plotname
+        )
+      })
+      })
+    }
   })
 }
 
