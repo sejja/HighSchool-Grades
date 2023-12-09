@@ -43,7 +43,7 @@ generate_na_values <- function(dataset) {
 #Replace NA values with the mean of the column
 na_imputation <- function(dataset){
   print("Filling NA values")
-  dataset$health[is.na(dataset$health)] <- mean(dataset$health, na.rm = TRUE)
+  dataset$health[is.na(dataset$health)] <- round(mean(dataset$health, na.rm = TRUE))
   return(dataset)
 }
 
