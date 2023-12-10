@@ -1,9 +1,7 @@
 library(shiny)
 library(shinythemes)
-source("DataCollection.R")
-source("DataPreparation.R")
 
-Surveillance <- prepare_data(math_df)
+load("datsets.RData")
 
 ui <- fluidPage(
   theme = shinytheme("sandstone"),
@@ -19,7 +17,7 @@ ui <- fluidPage(
   
   selectizeInput(inputId = "selection_tags", 
                  label = NULL, 
-                 choices = names(Surveillance), 
+                 choices = names(math_df), 
                  selected = c("grade_1", "grade_2"), 
                  multiple = T,
                  options = NULL),
@@ -33,7 +31,7 @@ ui <- fluidPage(
       sliderInput(inputId = "samplesize",
                   label = "Sample Size:",
                   min = 1,
-                  max = nrow(Surveillance),
+                  max = nrow(math_df),
                   value = 30)
       
     ),
@@ -65,7 +63,7 @@ server <- function(input, output) {
       plotname <- paste0("plot", my_i)
       
       output[[plotname]] <- renderPlot({
-        plot(Surveillance[[permutations[1, my_i]]][1:input$samplesize], Surveillance[[permutations[2, my_i]]][1:input$samplesize],
+        plot(math_df[[permutations[1, my_i]]][1:input$samplesize], math_df[[permutations[2, my_i]]][1:input$samplesize],
              xlab = permutations[1, my_i], 
              ylab = permutations[2, my_i],
              main = plotname

@@ -80,10 +80,16 @@ prepare_data <- function(df) {
   df <- remove_excess_rows(df)
   df <- convert_types(df)
   df <- swap_rows(df)
-  find_outliers(df)
+  #df <- find_outliers(df)
   df <- generate_na_values(df)
   df <- na_imputation(df)
   df <- normal_column(df)
   df <- combined_column(df)
   return (df)
 }
+
+math_df <- prepare_data(math_df)
+portuguese_df <- prepare_data(portuguese_df)
+both_df <- prepare_data(both_df)
+
+save.image("datsets.RData")
