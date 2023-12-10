@@ -1,3 +1,4 @@
+# Converts dataset values into R native values
 convert_types <- function(dataset) {
   print("Convert into appropiate types")
   logical_fields <- c("school_support", "family_support", "extra_paid_classes", "activities", "nursery_school", "higher_ed", "internet_access", "romantic_relationship")
@@ -13,6 +14,7 @@ convert_types <- function(dataset) {
   return (dataset)
 }
 
+# Swaps rows to order by data type
 swap_rows <- function(dataset) {
   print("Swap rows for tydiness")
   names <- names(dataset)
@@ -22,6 +24,7 @@ swap_rows <- function(dataset) {
   return (dataset)
 }
 
+#Retrieves the outliers (uses Boxplot_outliers function)
 find_outliers <- function(dataset){
   print("Searching outliers")
   important_numeric_fields <- c("absences","age","weekday_alcohol","weekend_alcohol","health")
@@ -29,6 +32,7 @@ find_outliers <- function(dataset){
   # Hay que ver cuales quitamos y cuales dejamos --------------------------------------------------------------------------------
 }
 
+#Uses Boxplot to return a list with the outliers
 boxplot_outliers <- function(column) {
   outliers <- boxplot(column, plot = FALSE)$out
   names(outliers) <- names(column)
@@ -51,18 +55,21 @@ na_imputation <- function(dataset){
   return(dataset)
 }
 
+# Adds normalized_health column to the dataset (range [0,1])
 normal_column <- function(dataset){
   print("Adding normalized health column")
   dataset$normalized_health <- (dataset$health - min(dataset$health))/(max(dataset$health)-min(dataset$health))
   return(dataset)
 }
 
+# Adds week_alcohol column to the dataset (average between weekend and weekday alcohol)
 combined_column <- function(dataset){
   print("Adding combined alcohol column")
   dataset$week_alcohol <- (dataset$weekday_alcohol + dataset$weekend_alcohol)/2
   return(dataset)
 }
 
+# Removes unused column
 remove_excess_rows <- function(dataset) {
   print("Removing uneeded rows")
   dataset$student_id <- NULL
