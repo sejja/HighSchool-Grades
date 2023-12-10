@@ -92,4 +92,4 @@ math_df <- prepare_data(math_df)
 portuguese_df <- prepare_data(portuguese_df)
 both_df <- prepare_data(both_df)
 
-save.image("datsets.RData")
+save.image("datasets.RData")

@@ -1,7 +1,7 @@
 library(shiny)
 library(shinythemes)
 
-load("datsets.RData")
+load("datasets.RData")
 
 ui <- fluidPage(
   theme = shinytheme("sandstone"),
