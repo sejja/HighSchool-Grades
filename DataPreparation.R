@@ -4,14 +4,22 @@ source("DataCollection.R")
 convert_types <- function(dataset) {
   print("Convert into appropiate types")
   logical_fields <- c("school_support", "family_support", "extra_paid_classes", "activities", "nursery_school", "higher_ed", "internet_access", "romantic_relationship")
-  factor_fields <- c("school", "sex", "address_type", "family_size", "parent_status", "mother_education", "father_education", "mother_job", "father_job", "school_choice_reason", "guardian", "travel_time", "study_time")
+  unordered_factor_fields <- c("school", "sex", "address_type", "parent_status", "mother_job", "father_job", "school_choice_reason", "guardian")
   
   print("Converting boolean like types into logicals")
   dataset[logical_fields] <- lapply(dataset[logical_fields], function(x) x == "yes")
   
   
   print("Converting pure string fields to factors when applicable")
-  dataset[factor_fields] <- lapply(dataset[factor_fields], as.factor)
+  dataset[unordered_factor_fields] <- lapply(dataset[unordered_factor_fields], as.factor)
+  dataset$family_size <- ordered(dataset$family_size, levels = c("Greater than 3", "Less than or equal to 3"))
+  
+  education_levels <- c("higher education", "secondary education", "5th to 9th grade", "primary education (4th grade)", "none")
+  dataset$mother_education <- ordered(dataset$mother_education, levels = education_levels)
+  dataset$father_education <- ordered(dataset$father_education, levels = education_levels)
+  
+  dataset$travel_time <- ordered(dataset$travel_time, levels = c(">1 hour", "30 min. to 1 hour", "15 to 30 min.", "<15 min."))
+  dataset$study_time <- ordered(dataset$study_time, levels = c(">10 hours", "5 to 10 hours", "2 to 5 hours", "<2 hours"))
 
   return (dataset)
 }
