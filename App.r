@@ -81,7 +81,7 @@ server <- function(input, output) {
       plotname <- paste0("plotm", my_i)
       
       output[[plotname]] <- renderPlot({
-        plot(math_df[[permutations[1, my_i]]][1:input$samplesize], math_df[[permutations[2, my_i]]][1:input$samplesize],
+        plot(math_df[[permutations[1, my_i]]][1:isolate(input$samplesize)], math_df[[permutations[2, my_i]]][1:isolate(input$samplesize)],
              xlab = permutations[1, my_i], 
              ylab = permutations[2, my_i],
              main = plotname
@@ -96,7 +96,7 @@ server <- function(input, output) {
         plotname <- paste0("plotp", my_i)
         
         output[[plotname]] <- renderPlot({
-          plot(portuguese_df[[permutations[1, my_i]]][1:input$samplesize], portuguese_df[[permutations[2, my_i]]][1:input$samplesize],
+          plot(portuguese_df[[permutations[1, my_i]]][1:isolate(input$samplesize)], portuguese_df[[permutations[2, my_i]]][1:isolate(input$samplesize)],
                xlab = permutations[1, my_i], 
                ylab = permutations[2, my_i],
                main = plotname
@@ -111,7 +111,7 @@ server <- function(input, output) {
         plotname <- paste0("plota", my_i)
         
         output[[plotname]] <- renderPlot({
-          plot(both_df[[permutations[1, my_i]]][1:input$samplesize], both_df[[permutations[2, my_i]]][1:input$samplesize],
+          plot(both_df[[permutations[1, my_i]]][1:isolate(input$samplesize)], both_df[[permutations[2, my_i]]][1:isolate(input$samplesize)],
                xlab = permutations[1, my_i], 
                ylab = permutations[2, my_i],
                main = plotname
