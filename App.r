@@ -1,6 +1,7 @@
 library(shiny)
 library(shinythemes)
 
+source("DataPreparation.R")
 load("datasets.RData")
 
 ui <- fluidPage(
