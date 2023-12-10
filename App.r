@@ -10,9 +10,9 @@ ui <- fluidPage(
   ),
   navbarPage(
     "High School Grades",
-    tabPanel("Math"),
-    tabPanel("Portuguese"),
-    tabPanel("Average")
+    tabPanel("Math", uiOutput("panelMath")),
+    tabPanel("Portuguese", uiOutput("panelPortuguese")),
+    tabPanel("Average", uiOutput("panelAverage"))
   ),
   
   selectizeInput(inputId = "selection_tags", 
@@ -48,19 +48,36 @@ server <- function(input, output) {
     showNotification("Updated Plotting Parameters")
     
     permutations <- combn(input$selection_tags, 2)
-    output$plots <- renderUI({
-    plot_output_list <- lapply(1:ncol(permutations), function(i) {
-      plotname <- paste0("plot", i)
-      plotOutput(plotname, height = 512, width = 512)
+    output$panelMath <- renderUI({
+      plot_output_list <- lapply(1:ncol(permutations), function(i) {
+        plotname <- paste0("plotm", i)
+        plotOutput(plotname, height = 512, width = 512)
+      })
+      
+      do.call(tagList, plot_output_list)
     })
-
-    do.call(tagList, plot_output_list)
-  })
+    output$panelPortuguese <- renderUI({
+      plot_output_list <- lapply(1:ncol(permutations), function(i) {
+        plotname <- paste0("plotp", i)
+        plotOutput(plotname, height = 512, width = 512)
+      })
+      
+      do.call(tagList, plot_output_list)
+    })
+    
+    output$panelAverage <- renderUI({
+      plot_output_list <- lapply(1:ncol(permutations), function(i) {
+        plotname <- paste0("plota", i)
+        plotOutput(plotname, height = 512, width = 512)
+      })
+      
+      do.call(tagList, plot_output_list)
+    })
 
   for (i in 1:ncol(permutations)) {
     local({
       my_i <- i
-      plotname <- paste0("plot", my_i)
+      plotname <- paste0("plotm", my_i)
       
       output[[plotname]] <- renderPlot({
         plot(math_df[[permutations[1, my_i]]][1:input$samplesize], math_df[[permutations[2, my_i]]][1:input$samplesize],
@@ -69,6 +86,36 @@ server <- function(input, output) {
              main = plotname
         )
       })
+      })
+  }
+    
+    for (i in 1:ncol(permutations)) {
+      local({
+        my_i <- i
+        plotname <- paste0("plotp", my_i)
+        
+        output[[plotname]] <- renderPlot({
+          plot(portuguese_df[[permutations[1, my_i]]][1:input$samplesize], portuguese_df[[permutations[2, my_i]]][1:input$samplesize],
+               xlab = permutations[1, my_i], 
+               ylab = permutations[2, my_i],
+               main = plotname
+          )
+        })
+      })
+    }
+    
+    for (i in 1:ncol(permutations)) {
+      local({
+        my_i <- i
+        plotname <- paste0("plota", my_i)
+        
+        output[[plotname]] <- renderPlot({
+          plot(both_df[[permutations[1, my_i]]][1:input$samplesize], both_df[[permutations[2, my_i]]][1:input$samplesize],
+               xlab = permutations[1, my_i], 
+               ylab = permutations[2, my_i],
+               main = plotname
+          )
+        })
       })
     }
   })
