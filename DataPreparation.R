@@ -71,6 +71,27 @@ combined_column <- function(dataset){
   return(dataset)
 }
 
+get_grade_letter <- function(percentage) {
+  if (percentage >= 90) {
+    return("A")
+  } else if (percentage >= 80) {
+    return("B")
+  } else if (percentage >= 70) {
+    return("C")
+  } else if (percentage >= 60) {
+    return("D")
+  } else {
+    return("F")
+  }
+}
+
+categorical_column <- function(dataset){
+  print("Adding categorical column")
+  dataset$final_grade_letter <- lapply(dataset$final_grade * 100/20, get_grade_letter)
+  dataset$final_grade_letter <- factor(dataset$final_grade_letter, levels = c("A", "B", "C", "D", "F"))
+  return(dataset)
+}
+
 # Removes unused column
 remove_excess_rows <- function(dataset) {
   print("Removing uneeded rows")
@@ -87,6 +108,7 @@ prepare_data <- function(df) {
   df <- na_imputation(df)
   df <- normal_column(df)
   df <- combined_column(df)
+  df <- categorical_column(df)
   return (df)
 }
 
