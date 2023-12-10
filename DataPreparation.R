@@ -28,10 +28,9 @@ swap_rows <- function(dataset) {
 
 #Retrieves the outliers (uses Boxplot_outliers function)
 find_outliers <- function(dataset){
-  print("Searching outliers")
-  important_numeric_fields <- c("absences","age","weekday_alcohol","weekend_alcohol","health")
+  print("Searching for outliers")
+  important_numeric_fields <- c("age", "absences", "class_failures", "weekday_alcohol", "weekend_alcohol", "health", "grade_1", "grade_2", "final_grade")
   outliers_list <- lapply(dataset[important_numeric_fields], boxplot_outliers)
-  # Hay que ver cuales quitamos y cuales dejamos --------------------------------------------------------------------------------
 }
 
 #Uses Boxplot to return a list with the outliers
@@ -82,7 +81,7 @@ prepare_data <- function(df) {
   df <- remove_excess_rows(df)
   df <- convert_types(df)
   df <- swap_rows(df)
-  #df <- find_outliers(df)
+  df <- find_outliers(df)
   df <- generate_na_values(df)
   df <- na_imputation(df)
   df <- normal_column(df)
@@ -90,8 +89,11 @@ prepare_data <- function(df) {
   return (df)
 }
 
+print("Math dataset")
 math_df <- prepare_data(math_df)
+print("Portuguese dataset")
 portuguese_df <- prepare_data(portuguese_df)
+print("Both datasets")
 both_df <- prepare_data(both_df)
 
 save.image("datasets.RData")
