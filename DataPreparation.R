@@ -1,3 +1,5 @@
+source("DataCollection.R")
+
 # Converts dataset values into R native values
 convert_types <- function(dataset) {
   print("Convert into appropiate types")
