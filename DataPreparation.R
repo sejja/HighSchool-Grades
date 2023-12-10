@@ -31,6 +31,7 @@ find_outliers <- function(dataset){
   print("Searching for outliers")
   important_numeric_fields <- c("age", "absences", "class_failures", "weekday_alcohol", "weekend_alcohol", "health", "grade_1", "grade_2", "final_grade")
   outliers_list <- lapply(dataset[important_numeric_fields], boxplot_outliers)
+  return(dataset)
 }
 
 #Uses Boxplot to return a list with the outliers
